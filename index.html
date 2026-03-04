@@ -667,6 +667,23 @@
     gap: 10px;
     font-size: 14px;
     color: var(--text2);
+    border-radius: 6px;
+    padding: 4px 6px;
+    transition: background 0.3s, opacity 0.3s;
+  }
+
+  .week-item.topic-passed { background: rgba(0,229,160,0.05); }
+
+  .week-progress-pill {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text3);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+    border-radius: 100px;
+    transition: all 0.4s;
   }
 
   .week-item-dot {
@@ -880,7 +897,7 @@
     <li><a href="#journey">Journey</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="mailto:simran.bhatiawork09@gmail.com" class="nav-cta">Get in touch</a>
+  <a href="/cdn-cgi/l/email-protection#f5869c9887949bdb979d94819c94829a879ec5ccb59298949c99db969a98" class="nav-cta">Get in touch</a>
 </nav>
 
 <!-- HERO -->
@@ -1118,17 +1135,20 @@
 
     <div class="journey-timeline">
 
-      <div class="week-block">
+      <div class="week-block" id="week-block-1">
         <div class="week-block-header">
           <div class="week-num" style="background:#00D4FF;">Week 1</div>
           <div class="week-block-title">Foundations & Mental Models</div>
+          <div class="week-progress-pill" id="pill-1"><span id="pill-count-1">0</span>/6</div>
         </div>
         <div class="week-block-focus">How LLMs actually work — explained for a fintech PM</div>
         <div class="week-items">
-          <div class="week-item"><div class="week-item-dot"></div>How LLMs work (3Blue1Brown Neural Networks)</div>
-          <div class="week-item"><div class="week-item-dot"></div>AI product landscape in fintech — Razorpay, PhonePe, Setu</div>
-          <div class="week-item"><div class="week-item-dot"></div>Key concepts: tokens, RAG, agents, fine-tuning, context windows</div>
-          <div class="week-item"><div class="week-item-dot"></div>Set up AI toolkit: Claude Pro + ChatGPT + Perplexity</div>
+          <div class="week-item" data-topic="1-1"><div class="week-item-dot"></div><span>How LLMs work (3Blue1Brown Neural Networks)</span></div>
+          <div class="week-item" data-topic="1-2"><div class="week-item-dot"></div><span>AI product landscape in fintech — Razorpay, PhonePe, Setu</span></div>
+          <div class="week-item" data-topic="1-3"><div class="week-item-dot"></div><span>Key concepts: tokens, RAG, agents, fine-tuning, context windows</span></div>
+          <div class="week-item" data-topic="1-4"><div class="week-item-dot"></div><span>Fintech AI deep-dive: how Indian fintechs use AI today</span></div>
+          <div class="week-item" data-topic="1-5"><div class="week-item-dot"></div><span>Set up AI toolkit: Claude Pro + ChatGPT + Perplexity</span></div>
+          <div class="week-item" data-topic="1-6"><div class="week-item-dot"></div><span>Weekend build: AI Opportunity Audit for IDFC FIRST feature</span></div>
         </div>
         <div class="week-build" style="background:rgba(0,212,255,0.06); border:1px solid rgba(0,212,255,0.15);">
           <span>⚡</span>
@@ -1136,17 +1156,20 @@
         </div>
       </div>
 
-      <div class="week-block">
+      <div class="week-block" id="week-block-2">
         <div class="week-block-header">
           <div class="week-num" style="background:#A855F7;">Week 2</div>
           <div class="week-block-title">Prompting & LLM Fluency</div>
+          <div class="week-progress-pill" id="pill-2"><span id="pill-count-2">0</span>/6</div>
         </div>
         <div class="week-block-focus">Become a power user — extract maximum value from AI</div>
         <div class="week-items">
-          <div class="week-item"><div class="week-item-dot"></div>Prompt engineering fundamentals via Anthropic's guide</div>
-          <div class="week-item"><div class="week-item-dot"></div>Advanced: chain-of-thought, structured outputs, few-shot</div>
-          <div class="week-item"><div class="week-item-dot"></div>PM-specific prompting: PRDs, user stories, research synthesis</div>
-          <div class="week-item"><div class="week-item-dot"></div>First Claude API call via Python</div>
+          <div class="week-item" data-topic="2-1"><div class="week-item-dot"></div><span>Prompt engineering fundamentals via Anthropic's guide</span></div>
+          <div class="week-item" data-topic="2-2"><div class="week-item-dot"></div><span>Advanced: chain-of-thought, structured outputs, few-shot</span></div>
+          <div class="week-item" data-topic="2-3"><div class="week-item-dot"></div><span>PM-specific prompting: PRDs, user stories, research synthesis</span></div>
+          <div class="week-item" data-topic="2-4"><div class="week-item-dot"></div><span>Build personal Prompt Library — 10 reusable PM prompts</span></div>
+          <div class="week-item" data-topic="2-5"><div class="week-item-dot"></div><span>First Claude API call via Python</span></div>
+          <div class="week-item" data-topic="2-6"><div class="week-item-dot"></div><span>Weekend build: MSME Insight Extractor</span></div>
         </div>
         <div class="week-build" style="background:rgba(168,85,247,0.06); border:1px solid rgba(168,85,247,0.15);">
           <span>⚡</span>
@@ -1154,17 +1177,20 @@
         </div>
       </div>
 
-      <div class="week-block" style="border-color:rgba(0,229,160,0.2); background:linear-gradient(135deg, var(--surface) 0%, rgba(0,229,160,0.04) 100%);">
+      <div class="week-block" id="week-block-3" style="border-color:rgba(0,229,160,0.2); background:linear-gradient(135deg, var(--surface) 0%, rgba(0,229,160,0.04) 100%);">
         <div class="week-block-header">
           <div class="week-num" style="background:#00E5A0; color:#0D1219;">Week 3</div>
           <div class="week-block-title">Build ReguBot MVP</div>
+          <div class="week-progress-pill" id="pill-3"><span id="pill-count-3">0</span>/6</div>
         </div>
         <div class="week-block-focus">Go from PM who talks about AI to PM who ships with AI</div>
         <div class="week-items">
-          <div class="week-item"><div class="week-item-dot" style="background:var(--green)"></div>Download 20 RBI/NPCI circulars → chunk + embed into Pinecone</div>
-          <div class="week-item"><div class="week-item-dot" style="background:var(--green)"></div>Build core Q&A in Jupyter — test 20 regulatory questions</div>
-          <div class="week-item"><div class="week-item-dot" style="background:var(--green)"></div>Wrap in Streamlit UI with source citations</div>
-          <div class="week-item"><div class="week-item-dot" style="background:var(--green)"></div>Deploy on Railway — live public URL</div>
+          <div class="week-item" data-topic="3-1"><div class="week-item-dot" style="background:var(--green)"></div><span>Download 20 RBI/NPCI circulars → chunk + embed into Pinecone</span></div>
+          <div class="week-item" data-topic="3-2"><div class="week-item-dot" style="background:var(--green)"></div><span>Build core Q&A in Jupyter — test 20 regulatory questions</span></div>
+          <div class="week-item" data-topic="3-3"><div class="week-item-dot" style="background:var(--green)"></div><span>Wrap in Streamlit UI with source citations</span></div>
+          <div class="week-item" data-topic="3-4"><div class="week-item-dot" style="background:var(--green)"></div><span>Add conversation history, test edge cases</span></div>
+          <div class="week-item" data-topic="3-5"><div class="week-item-dot" style="background:var(--green)"></div><span>Deploy on Railway — live public URL</span></div>
+          <div class="week-item" data-topic="3-6"><div class="week-item-dot" style="background:var(--green)"></div><span>Share ReguBot with 5 fintech PMs, collect feedback</span></div>
         </div>
         <div class="week-build" style="background:rgba(0,229,160,0.06); border:1px solid rgba(0,229,160,0.2);">
           <span>🚀</span>
@@ -1172,17 +1198,20 @@
         </div>
       </div>
 
-      <div class="week-block">
+      <div class="week-block" id="week-block-4">
         <div class="week-block-header">
           <div class="week-num" style="background:#F4C842; color:#0D1219;">Week 4</div>
           <div class="week-block-title">Polish, Pitch & Think Like an AI PM</div>
+          <div class="week-progress-pill" id="pill-4"><span id="pill-count-4">0</span>/6</div>
         </div>
         <div class="week-block-focus">Turn prototype into something you're proud to show anywhere</div>
         <div class="week-items">
-          <div class="week-item"><div class="week-item-dot"></div>Iterate on user feedback — fix top 3 issues</div>
-          <div class="week-item"><div class="week-item-dot"></div>AI product strategy: build vs. buy, moats, evaluation frameworks</div>
-          <div class="week-item"><div class="week-item-dot"></div>RBI's AI/ML framework for BFSI — the rules I'm building around</div>
-          <div class="week-item"><div class="week-item-dot"></div>Write full ReguBot product proposal — portfolio piece</div>
+          <div class="week-item" data-topic="4-1"><div class="week-item-dot"></div><span>Iterate on ReguBot feedback — fix top 3 issues</span></div>
+          <div class="week-item" data-topic="4-2"><div class="week-item-dot"></div><span>AI product strategy: build vs. buy, moats, evaluation frameworks</span></div>
+          <div class="week-item" data-topic="4-3"><div class="week-item-dot"></div><span>RBI's AI/ML framework for BFSI — the rules I'm building around</span></div>
+          <div class="week-item" data-topic="4-4"><div class="week-item-dot"></div><span>Write an AI PRD — what's different from a normal product spec</span></div>
+          <div class="week-item" data-topic="4-5"><div class="week-item-dot"></div><span>Mock AI PM interview — practice talking about ReguBot</span></div>
+          <div class="week-item" data-topic="4-6"><div class="week-item-dot"></div><span>Final: Write full ReguBot Product Proposal</span></div>
         </div>
         <div class="week-build" style="background:rgba(244,200,66,0.06); border:1px solid rgba(244,200,66,0.15);">
           <span>🎯</span>
@@ -1194,6 +1223,84 @@
   </div>
 </section>
 
+<script>
+// ── PROGRESS SYNC ──────────────────────────────────────────────────────────
+// Reads completed topics from the learning tracker's shared storage key
+// and highlights them on this portfolio page automatically.
+// The learning tracker saves progress under key: "simran-progress"
+
+const WEEK_COLORS = { 1: '#00D4FF', 2: '#A855F7', 3: '#00E5A0', 4: '#F4C842' };
+
+function applyProgress(progress) {
+  const allItems = document.querySelectorAll('.week-item[data-topic]');
+  const weekCounts = { 1: 0, 2: 0, 3: 0, 4: 0 };
+
+  allItems.forEach(item => {
+    const topicId = item.getAttribute('data-topic');
+    const weekNum = parseInt(topicId.split('-')[0]);
+    const state = progress[topicId];
+
+    if (state?.status === 'passed') {
+      weekCounts[weekNum]++;
+      item.classList.add('topic-passed');
+      const dot = item.querySelector('.week-item-dot');
+      const text = item.querySelector('span');
+      if (dot) { dot.style.background = '#00E5A0'; dot.style.boxShadow = '0 0 6px rgba(0,229,160,0.5)'; }
+      if (text) { text.style.textDecoration = 'line-through'; text.style.color = 'var(--text3)'; }
+      if (!item.querySelector('.tick-badge')) {
+        const badge = document.createElement('span');
+        badge.className = 'tick-badge';
+        badge.textContent = '✓';
+        badge.style.cssText = 'font-size:10px;color:#00E5A0;font-weight:700;margin-left:6px;flex-shrink:0;';
+        item.appendChild(badge);
+      }
+    } else if (state?.status === 'pending_retry') {
+      const dot = item.querySelector('.week-item-dot');
+      if (dot) { dot.style.background = '#FF4D6D'; dot.style.opacity = '0.6'; }
+    }
+  });
+
+  // Update week progress pills
+  Object.entries(weekCounts).forEach(([week, count]) => {
+    const countEl = document.getElementById(`pill-count-${week}`);
+    if (countEl) countEl.textContent = count;
+    const pill = document.getElementById(`pill-${week}`);
+    if (pill && count > 0) {
+      pill.style.color = WEEK_COLORS[week];
+      pill.style.borderColor = `${WEEK_COLORS[week]}40`;
+      pill.style.background = `${WEEK_COLORS[week]}10`;
+    }
+    // Glow the week block if fully complete
+    if (count === 6) {
+      const block = document.getElementById(`week-block-${week}`);
+      if (block) block.style.boxShadow = `0 0 0 1px ${WEEK_COLORS[week]}30, 0 8px 32px ${WEEK_COLORS[week]}10`;
+    }
+  });
+}
+
+async function loadAndApplyProgress() {
+  // Try to read from the artifact storage API (shared key)
+  try {
+    if (window.storage) {
+      const result = await window.storage.get('simran-progress');
+      if (result?.value) {
+        applyProgress(JSON.parse(result.value));
+        return;
+      }
+    }
+  } catch {}
+  // Fallback: check localStorage for manually exported progress
+  try {
+    const local = localStorage.getItem('simran-progress-export');
+    if (local) applyProgress(JSON.parse(local));
+  } catch {}
+}
+
+// Run on load and re-check every 30 seconds (live updates while tracker is open)
+loadAndApplyProgress();
+setInterval(loadAndApplyProgress, 30000);
+</script>
+
 <!-- CONTACT -->
 <section id="contact">
   <div class="section-eyebrow">Let's talk</div>
@@ -1204,11 +1311,11 @@
         If you're a fintech founder, PM, or fellow builder — let's connect. I'm always up to talk payments, AI product ideas, or compare notes on what's actually working.
       </p>
       <div class="contact-links">
-        <a href="mailto:simran.bhatiawork09@gmail.com" class="contact-link">
+        <a href="/cdn-cgi/l/email-protection#8dfee4e0ffece3a3efe5ecf9e4ecfae2ffe6bdb4cdeae0ece4e1a3eee2e0" class="contact-link">
           <div class="contact-link-icon" style="background:rgba(0,212,255,0.1);">📧</div>
           <div class="contact-link-text">
             <div class="contact-link-label">Email</div>
-            <div class="contact-link-value">simran.bhatiawork09@gmail.com</div>
+            <div class="contact-link-value"><span class="__cf_email__" data-cfemail="02716b6f70636c2c606a63766b63756d7069323b42656f636b6e2c616d6f">[email&#160;protected]</span></div>
           </div>
         </a>
         <a href="https://linkedin.com/in/simrankaurbhatia" target="_blank" class="contact-link">
@@ -1255,7 +1362,7 @@
   <div class="footer-copy">Built by Simran Kaur Bhatia · 2026 · Mumbai</div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
@@ -1273,14 +1380,4 @@
   const weekObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        const idx = Array.from(weekBlocks).indexOf(entry.target);
-        weekNavItems.forEach(n => n.classList.remove('active'));
-        if (weekNavItems[idx]) weekNavItems[idx].classList.add('active');
-      }
-    });
-  }, { threshold: 0.5 });
-  weekBlocks.forEach(b => weekObserver.observe(b));
-</script>
-
-</body>
-</html>
+        con
