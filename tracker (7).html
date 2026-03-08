@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>skb.learn — AI Learning Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #1a1a1a;
+    --border: #222222;
+    --accent: #c8f135;
+    --accent2: #f1d435;
+    --text: #f0f0f0;
+    --text2: #888888;
+    --text3: #555555;
+    --danger: #ff4444;
+    --success: #c8f135;
+    --radius: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    padding: 24px 16px;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+  }
+
+  .logo span { color: var(--text2); font-weight: 400; }
+
+  .date-badge {
+    font-size: 0.7rem;
+    color: var(--text3);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* MODULE CARD */
+  .module-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .module-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+  }
+
+  .module-week {
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .module-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .module-resource {
+    font-size: 0.75rem;
+    color: var(--text2);
+    margin-bottom: 20px;
+  }
+
+  .module-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  .status-pending { background: #1a1a00; color: var(--accent2); border: 1px solid #333300; }
+  .status-passed { background: #0a1a00; color: var(--accent); border: 1px solid #1a3300; }
+  .status-failed { background: #1a0000; color: var(--danger); border: 1px solid #330000; }
+  .status-inprogress { background: #001a1a; color: #35f1e4; border: 1px solid #003333; }
+
+  /* PROGRESS BAR */
+  .progress-section {
+    margin-bottom: 28px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text3);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .progress-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 24px;
+    border-radius: var(--radius);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    letter-spacing: 0.5px;
+    width: 100%;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+  }
+
+  .btn-primary:hover { background: #d4f545; transform: translateY(-1px); }
+  .btn-primary:disabled { background: var(--border); color: var(--text3); cursor: not-allowed; transform: none; }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text2);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover { border-color: var(--text3); color: var(--text); }
+
+  .btn-danger {
+    background: transparent;
+    color: var(--danger);
+    border: 1px solid #330000;
+  }
+
+  .btn-danger:hover { background: #1a0000; }
+
+  /* QUIZ SECTION */
+  .quiz-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .quiz-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .quiz-progress {
+    font-size: 0.7rem;
+    color: var(--text3);
+    letter-spacing: 1px;
+  }
+
+  .quiz-score-live {
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 1px;
+  }
+
+  .question-area {
+    padding: 28px 24px;
+  }
+
+  .question-number {
+    font-size: 0.65rem;
+    color: var(--text3);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .question-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+
+  .answer-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    resize: vertical;
+    min-height: 100px;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  .answer-input:focus { border-color: var(--accent); }
+  .answer-input::placeholder { color: var(--text3); }
+
+  .answer-feedback {
+    margin-top: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .feedback-correct { background: #0a1a00; color: var(--accent); border: 1px solid #1a3300; }
+  .feedback-incorrect { background: #1a0000; color: #ff8888; border: 1px solid #330000; }
+  .feedback-partial { background: #1a1000; color: var(--accent2); border: 1px solid #333000; }
+
+  .quiz-nav {
+    padding: 20px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 12px;
+  }
+
+  /* RESULT SECTION */
+  .result-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 40px 28px;
+    text-align: center;
+  }
+
+  .result-score {
+    font-family: 'Syne', sans-serif;
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .result-score.pass { color: var(--accent); }
+  .result-score.fail { color: var(--danger); }
+
+  .result-label {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 24px;
+  }
+
+  .result-message {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .result-sub {
+    font-size: 0.8rem;
+    color: var(--text2);
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+
+  .result-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* LOADING */
+  .loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+    gap: 16px;
+  }
+
+  .loading-dot {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: inline-block;
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+
+  .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  .loading-dots { display: flex; gap: 8px; }
+
+  @keyframes pulse {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+
+  .loading-text {
+    font-size: 0.75rem;
+    color: var(--text3);
+    letter-spacing: 1px;
+  }
+
+  /* HISTORY */
+  .history-section {
+    margin-top: 32px;
+  }
+
+  .history-title {
+    font-size: 0.65rem;
+    color: var(--text3);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .history-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 0.75rem;
+  }
+
+  .history-module { color: var(--text2); flex: 1; }
+  .history-score { color: var(--text3); margin: 0 12px; }
+  .history-date { color: var(--text3); font-size: 0.7rem; }
+  .history-badge { padding: 2px 8px; border-radius: 20px; font-size: 0.65rem; }
+  .badge-pass { background: #0a1a00; color: var(--accent); }
+  .badge-fail { background: #1a0000; color: var(--danger); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: var(--text);
+    transition: transform 0.3s ease;
+    z-index: 100;
+    white-space: nowrap;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.success { border-color: var(--accent); color: var(--accent); }
+  .toast.error { border-color: var(--danger); color: var(--danger); }
+
+  /* COMPLETION BANNER */
+  .all-done {
+    text-align: center;
+    padding: 60px 24px;
+  }
+
+  .all-done-emoji { font-size: 3rem; margin-bottom: 16px; }
+
+  .all-done-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .all-done-sub {
+    font-size: 0.85rem;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  /* UTIL */
+  .hidden { display: none !important; }
+  .mt-12 { margin-top: 12px; }
+  .mt-16 { margin-top: 16px; }
+  .gap-12 { gap: 12px; }
+
+  .sync-status {
+    font-size: 0.7rem;
+    color: var(--text3);
+    text-align: center;
+    margin-top: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .sync-status.synced { color: var(--accent); }
+  .sync-status.failed { color: var(--danger); }
+
+  @media (max-width: 480px) {
+    body { padding: 16px 12px; }
+    .module-title { font-size: 1rem; }
+    .result-score { font-size: 3rem; }
+    .question-text { font-size: 0.95rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="logo">skb<span>.learn</span></div>
+    <div class="date-badge" id="todayDate"></div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-section">
+    <div class="progress-label">
+      <span>Overall Progress</span>
+      <span id="progressText">0 / 0 modules</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div id="mainContent"></div>
+
+  <!-- HISTORY -->
+  <div class="history-section" id="historySection"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// CONFIGURATION — Edit your curriculum here
+// ============================================================
+const CURRICULUM = [
+  { week: "Week 1", day: "Mon", title: "How LLMs work", resource: "3Blue1Brown Neural Networks Ep 1-2" },
+  { week: "Week 1", day: "Tue", title: "AI product landscape in fintech", resource: "Razorpay, PhonePe case studies" },
+  { week: "Week 1", day: "Wed", title: "Key concepts: tokens, context windows, RAG, agents", resource: "Anthropic & OpenAI docs" },
+  { week: "Week 1", day: "Thu", title: "Fintech AI deep-dive", resource: "How Indian fintechs are using AI" },
+  { week: "Week 1", day: "Fri", title: "Set up AI toolkit", resource: "Claude Pro + ChatGPT Plus + Perplexity" },
+  { week: "Week 1", day: "Weekend", title: "Build AI Opportunity Audit", resource: "For one IDFC FIRST feature" },
+  { week: "Week 2", day: "Mon", title: "Prompting & LLM Fluency", resource: "Advanced prompting techniques" },
+  { week: "Week 2", day: "Tue", title: "Chain of thought prompting", resource: "Few-shot and zero-shot examples" },
+  { week: "Week 2", day: "Wed", title: "AI product metrics", resource: "How to measure AI feature success" },
+  { week: "Week 2", day: "Thu", title: "RAG deep dive", resource: "Retrieval Augmented Generation" },
+  { week: "Week 2", day: "Fri", title: "Agents and tool use", resource: "Building agentic workflows" },
+  { week: "Week 2", day: "Weekend", title: "Build a prompt library", resource: "For IDFC FIRST use cases" },
+  { week: "Week 3", day: "Mon", title: "AI safety and alignment", resource: "Anthropic's Constitutional AI" },
+  { week: "Week 3", day: "Tue", title: "Evaluating AI outputs", resource: "Evals frameworks and techniques" },
+  { week: "Week 3", day: "Wed", title: "Fine-tuning vs prompting", resource: "When to use which approach" },
+  { week: "Week 3", day: "Thu", title: "Multimodal AI", resource: "Vision, audio, and text models" },
+  { week: "Week 3", day: "Fri", title: "AI in product roadmaps", resource: "Prioritization frameworks" },
+  { week: "Week 3", day: "Weekend", title: "Write AI PRD", resource: "For one IDFC FIRST AI feature" },
+  { week: "Week 4", day: "Mon", title: "AI ethics and regulation", resource: "EU AI Act, RBI guidelines" },
+  { week: "Week 4", day: "Tue", title: "Vector databases", resource: "Pinecone, Weaviate, pgvector" },
+  { week: "Week 4", day: "Wed", title: "LLM APIs in production", resource: "Latency, cost, reliability" },
+  { week: "Week 4", day: "Thu", title: "AI interview prep", resource: "Common PM AI interview questions" },
+  { week: "Week 4", day: "Fri", title: "Build portfolio project", resource: "End-to-end AI feature demo" },
+  { week: "Week 4", day: "Weekend", title: "Final presentation", resource: "Present your AI learning journey" }
+];
+
+const ANTHROPIC_API_KEY = null; // Key stored securely in Vercel environment variable
+const SHEETS_URL = "https://script.google.com/macros/s/AKfycbygPtHRJtpLoF3AhzxoChypOdIvb5eqn4utGETPg03AHi2L8mWVcDXsv8rK7uw7ZV0bzw/exec";
+const PASS_THRESHOLD = 8;
+const TOTAL_QUESTIONS = 10;
+
+// ============================================================
+// STATE MANAGEMENT
+// ============================================================
+function getState() {
+  return JSON.parse(localStorage.getItem('skb_state') || JSON.stringify({
+    currentModuleIndex: 0,
+    completedModules: [],
+    quizSession: null,
+    quizHistory: []
+  }));
+}
+
+function saveState(state) {
+  localStorage.setItem('skb_state', JSON.stringify(state));
+}
+
+// ============================================================
+// UI HELPERS
+// ============================================================
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.className = 'toast', 3000);
+}
+
+function setDate() {
+  const d = new Date();
+  document.getElementById('todayDate').textContent =
+    d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function updateProgress() {
+  const state = getState();
+  const completed = state.completedModules.length;
+  const total = CURRICULUM.length;
+  document.getElementById('progressText').textContent = `${completed} / ${total} modules`;
+  document.getElementById('progressFill').style.width = `${(completed / total) * 100}%`;
+}
+
+// ============================================================
+// CLAUDE API
+// ============================================================
+async function callClaude(prompt) {
+  const res = await fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt })
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(`Claude error: ${res.status} — ${err.error || ''}`);
+  }
+  const data = await res.json();
+  return data.text;
+}
+
+// ============================================================
+// GOOGLE SHEETS SYNC
+// ============================================================
+async function syncToSheets(module, status, score) {
+  try {
+    await fetch(SHEETS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ module, status, score }),
+      mode: 'no-cors'
+    });
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+// ============================================================
+// QUIZ ENGINE
+// ============================================================
+async function generateQuestion(module, questionNumber, previousQAs) {
+  const prevContext = previousQAs.length > 0
+    ? `\nPrevious questions asked:\n${previousQAs.map(qa => `Q: ${qa.question}`).join('\n')}\nDo NOT repeat these questions.`
+    : '';
+
+  const prompt = `You are a quiz master testing understanding of: "${module.title}" (Resource: ${module.resource}).
+
+Generate question ${questionNumber} of ${TOTAL_QUESTIONS}.
+${prevContext}
+
+Rules:
+- Ask ONE clear question
+- Mix conceptual, application, and example-based questions
+- Keep it relevant to the specific topic
+- Format: Just the question, nothing else. No "Question X:" prefix.`;
+
+  return await callClaude(prompt);
+}
+
+async function evaluateAnswer(question, answer, module) {
+  const prompt = `You are evaluating a quiz answer about: "${module.title}".
+
+Question: ${question}
+Student's answer: ${answer}
+
+Evaluate the answer and respond in this EXACT JSON format (no markdown, no backticks):
+{"correct": true/false, "partial": true/false, "feedback": "brief explanation in 1-2 sentences", "score": 0 or 0.5 or 1}
+
+Rules:
+- correct: true only if answer demonstrates clear understanding
+- partial: true if answer shows some understanding but is incomplete
+- score: 1 for correct, 0.5 for partial, 0 for incorrect
+- feedback: be encouraging but honest`;
+
+  const response = await callClaude(prompt);
+  try {
+    const clean = response.replace(/```json|```/g, '').trim();
+    return JSON.parse(clean);
+  } catch (e) {
+    return { correct: false, partial: false, feedback: "Could not evaluate answer.", score: 0 };
+  }
+}
+
+// ============================================================
+// RENDER FUNCTIONS
+// ============================================================
+function renderHome() {
+  const state = getState();
+  const moduleIndex = state.currentModuleIndex;
+
+  if (moduleIndex >= CURRICULUM.length) {
+    renderAllDone();
+    return;
+  }
+
+  const module = CURRICULUM[moduleIndex];
+  const isCompleted = state.completedModules.includes(moduleIndex);
+  const hasActiveSession = state.quizSession && state.quizSession.moduleIndex === moduleIndex;
+
+  let statusHtml = '';
+  if (isCompleted) {
+    statusHtml = `<span class="module-status status-passed">✓ Passed</span>`;
+  } else if (hasActiveSession) {
+    const q = state.quizSession.currentQuestion;
+    statusHtml = `<span class="module-status status-inprogress">⟳ In progress — Q${q + 1}/${TOTAL_QUESTIONS}</span>`;
+  } else {
+    statusHtml = `<span class="module-status status-pending">◎ Pending</span>`;
+  }
+
+  let btnHtml = '';
+  if (isCompleted) {
+    btnHtml = `<button class="btn btn-secondary" disabled>Module Complete ✓</button>`;
+  } else if (hasActiveSession) {
+    btnHtml = `<button class="btn btn-primary" onclick="resumeQuiz()">Resume Quiz — Q${state.quizSession.currentQuestion + 1}/${TOTAL_QUESTIONS}</button>`;
+  } else {
+    btnHtml = `<button class="btn btn-primary" onclick="startQuiz()">Start Quiz →</button>`;
+  }
+
+  document.getElementById('mainContent').innerHTML = `
+    <div class="module-card">
+      <div class="module-week">${module.week} · ${module.day}</div>
+      <div class="module-title">${module.title}</div>
+      <div class="module-resource">${module.resource}</div>
+      ${statusHtml}
+    </div>
+    <div class="mt-16">${btnHtml}</div>
+  `;
+
+  renderHistory();
+  updateProgress();
+}
+
+function renderAllDone() {
+  document.getElementById('mainContent').innerHTML = `
+    <div class="all-done">
+      <div class="all-done-emoji">🎓</div>
+      <div class="all-done-title">Curriculum Complete!</div>
+      <div class="all-done-sub">You've completed all 24 modules of your AI learning journey. Well done, Simran.</div>
+    </div>
+  `;
+  updateProgress();
+}
+
+function renderHistory() {
+  const state = getState();
+  if (state.quizHistory.length === 0) {
+    document.getElementById('historySection').innerHTML = '';
+    return;
+  }
+
+  const recent = state.quizHistory.slice(-5).reverse();
+  document.getElementById('historySection').innerHTML = `
+    <div class="history-title">Recent Attempts</div>
+    ${recent.map(h => `
+      <div class="history-item">
+        <div class="history-module">${h.module}</div>
+        <div class="history-score">${h.score}/${TOTAL_QUESTIONS}</div>
+        <div class="history-date">${h.date}</div>
+        <span class="history-badge ${h.passed ? 'badge-pass' : 'badge-fail'}">${h.passed ? 'PASS' : 'FAIL'}</span>
+      </div>
+    `).join('')}
+  `;
+}
+
+function renderLoading(message = 'Generating question...') {
+  document.getElementById('mainContent').innerHTML = `
+    <div class="quiz-container">
+      <div class="loading">
+        <div class="loading-dots">
+          <div class="loading-dot"></div>
+          <div class="loading-dot"></div>
+          <div class="loading-dot"></div>
+        </div>
+        <div class="loading-text">${message}</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderQuestion() {
+  const state = getState();
+  const session = state.quizSession;
+  const module = CURRICULUM[session.moduleIndex];
+  const q = session.questions[session.currentQuestion];
+  const answered = session.answers[session.currentQuestion];
+
+  let feedbackHtml = '';
+  if (answered) {
+    const cls = answered.evaluation.correct ? 'feedback-correct' :
+                answered.evaluation.partial ? 'feedback-partial' : 'feedback-incorrect';
+    feedbackHtml = `<div class="answer-feedback ${cls}">${answered.evaluation.feedback}</div>`;
+  }
+
+  const isLast = session.currentQuestion === TOTAL_QUESTIONS - 1;
+  const canProceed = !!answered;
+
+  document.getElementById('mainContent').innerHTML = `
+    <div class="quiz-container">
+      <div class="quiz-header">
+        <div class="quiz-progress">Q${session.currentQuestion + 1} / ${TOTAL_QUESTIONS}</div>
+        <div class="quiz-score-live">Score: ${session.currentScore.toFixed(1)} / ${session.currentQuestion}</div>
+      </div>
+      <div class="question-area">
+        <div class="question-number">Question ${session.currentQuestion + 1}</div>
+        <div class="question-text">${q.question}</div>
+        <textarea
+          class="answer-input"
+          id="answerInput"
+          placeholder="Type your answer here..."
+          ${answered ? 'disabled' : ''}
+        >${answered ? answered.text : ''}</textarea>
+        ${feedbackHtml}
+      </div>
+      <div class="quiz-nav">
+        ${!answered ? `<button class="btn btn-primary" onclick="submitAnswer()">Submit Answer</button>` : ''}
+        ${answered && !isLast ? `<button class="btn btn-primary" onclick="nextQuestion()">Next Question →</button>` : ''}
+        ${answered && isLast ? `<button class="btn btn-primary" onclick="finishQuiz()">See Results →</button>` : ''}
+      </div>
+    </div>
+  `;
+
+  if (!answered) {
+    document.getElementById('answerInput').focus();
+  }
+}
+
+function renderResult() {
+  const state = getState();
+  const session = state.quizSession;
+  const module = CURRICULUM[session.moduleIndex];
+  const score = Math.round(session.currentScore);
+  const passed = score >= PASS_THRESHOLD;
+
+  document.getElementById('mainContent').innerHTML = `
+    <div class="result-card">
+      <div class="result-score ${passed ? 'pass' : 'fail'}">${score}<span style="font-size:1.5rem;color:var(--text3)">/${TOTAL_QUESTIONS}</span></div>
+      <div class="result-label">${passed ? 'Passed ✓' : 'Not passed yet'}</div>
+      <div class="result-message">${passed ? '🎉 Module Complete!' : '📚 Keep studying'}</div>
+      <div class="result-sub">${passed
+        ? `Great work on "${module.title}". Next module unlocks tomorrow.`
+        : `You scored ${score}/${TOTAL_QUESTIONS}. You need ${PASS_THRESHOLD} to pass. ${score >= 6 ? "You're close!" : "Review the material and try again."}`
+      }</div>
+      <div class="result-actions">
+        ${passed
+          ? `<button class="btn btn-primary" onclick="completeModule()">Mark Complete & Continue →</button>`
+          : `
+            <button class="btn btn-primary" onclick="retryQuiz()">Retry Quiz</button>
+            <button class="btn btn-secondary" onclick="skipForNow()">Try Again Tomorrow</button>
+          `
+        }
+      </div>
+      <div class="sync-status" id="syncStatus"></div>
+    </div>
+  `;
+}
+
+// ============================================================
+// QUIZ ACTIONS
+// ============================================================
+async function startQuiz() {
+  const state = getState();
+  const moduleIndex = state.currentModuleIndex;
+
+  state.quizSession = {
+    moduleIndex,
+    currentQuestion: 0,
+    questions: [],
+    answers: [],
+    currentScore: 0,
+    startedAt: new Date().toISOString()
+  };
+  saveState(state);
+
+  await loadNextQuestion();
+}
+
+function resumeQuiz() {
+  renderQuestion();
+}
+
+async function loadNextQuestion() {
+  const state = getState();
+  const session = state.quizSession;
+  const module = CURRICULUM[session.moduleIndex];
+
+  renderLoading(`Generating question ${session.currentQuestion + 1} of ${TOTAL_QUESTIONS}...`);
+
+  try {
+    const previousQAs = session.questions.map((q, i) => ({
+      question: q.question,
+      answer: session.answers[i] ? session.answers[i].text : ''
+    }));
+
+    const questionText = await generateQuestion(module, session.currentQuestion + 1, previousQAs);
+
+    session.questions.push({ question: questionText });
+    saveState({ ...getState(), quizSession: session });
+
+    renderQuestion();
+  } catch (e) {
+    document.getElementById('mainContent').innerHTML = `
+      <div class="result-card">
+        <div class="result-message" style="color:var(--danger)">Failed to generate question</div>
+        <div class="result-sub">${e.message.includes('429') ? 'Gemini quota exceeded. Please try again in a few hours.' : e.message}</div>
+        <div class="mt-16"><button class="btn btn-secondary" onclick="renderHome()">← Back</button></div>
+      </div>
+    `;
+  }
+}
+
+async function submitAnswer() {
+  const answerText = document.getElementById('answerInput').value.trim();
+  if (!answerText) {
+    showToast('Please write an answer first', 'error');
+    return;
+  }
+
+  const state = getState();
+  const session = state.quizSession;
+  const module = CURRICULUM[session.moduleIndex];
+  const question = session.questions[session.currentQuestion].question;
+
+  // Disable input and show loading
+  document.getElementById('answerInput').disabled = true;
+  const btn = document.querySelector('.quiz-nav .btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Evaluating...'; }
+
+  try {
+    const evaluation = await evaluateAnswer(question, answerText, module);
+
+    session.answers[session.currentQuestion] = {
+      text: answerText,
+      evaluation
+    };
+    session.currentScore += evaluation.score;
+
+    saveState({ ...getState(), quizSession: session });
+    renderQuestion();
+  } catch (e) {
+    showToast('Failed to evaluate answer. Try again.', 'error');
+    document.getElementById('answerInput').disabled = false;
+    if (btn) { btn.disabled = false; btn.textContent = 'Submit Answer'; }
+  }
+}
+
+async function nextQuestion() {
+  const state = getState();
+  const session = state.quizSession;
+  session.currentQuestion++;
+  saveState({ ...getState(), quizSession: session });
+  await loadNextQuestion();
+}
+
+async function finishQuiz() {
+  const state = getState();
+  const session = state.quizSession;
+  const module = CURRICULUM[session.moduleIndex];
+  const score = Math.round(session.currentScore);
+  const passed = score >= PASS_THRESHOLD;
+
+  // Save to history
+  state.quizHistory.push({
+    module: module.title,
+    score,
+    passed,
+    date: new Date().toLocaleDateString('en-GB')
+  });
+  saveState(state);
+
+  // Sync to sheets
+  await syncToSheets(module.title, passed ? 'passed' : 'failed', score);
+
+  renderResult();
+}
+
+async function completeModule() {
+  const state = getState();
+  const session = state.quizSession;
+  const module = CURRICULUM[session.moduleIndex];
+  const score = Math.round(session.currentScore);
+
+  document.getElementById('syncStatus').textContent = 'Syncing to Google Sheets...';
+
+  const synced = await syncToSheets(module.title, 'passed', score);
+
+  if (synced) {
+    document.getElementById('syncStatus').textContent = '✓ Synced to Google Sheets';
+    document.getElementById('syncStatus').className = 'sync-status synced';
+  } else {
+    document.getElementById('syncStatus').textContent = 'Could not sync — will retry next time';
+    document.getElementById('syncStatus').className = 'sync-status failed';
+  }
+
+  // Mark complete
+  if (!state.completedModules.includes(session.moduleIndex)) {
+    state.completedModules.push(session.moduleIndex);
+  }
+  state.currentModuleIndex = session.moduleIndex + 1;
+  state.quizSession = null;
+  saveState(state);
+
+  showToast('Module complete! 🎉', 'success');
+  setTimeout(() => renderHome(), 1500);
+}
+
+async function retryQuiz() {
+  const state = getState();
+  const moduleIndex = state.quizSession.moduleIndex;
+
+  state.quizSession = {
+    moduleIndex,
+    currentQuestion: 0,
+    questions: [],
+    answers: [],
+    currentScore: 0,
+    startedAt: new Date().toISOString()
+  };
+  saveState(state);
+
+  await loadNextQuestion();
+}
+
+function skipForNow() {
+  const state = getState();
+  state.quizSession = null;
+  saveState(state);
+  showToast('See you tomorrow 👋');
+  setTimeout(() => renderHome(), 1000);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+setDate();
+updateProgress();
+renderHome();
+</script>
+</body>
+</html>
